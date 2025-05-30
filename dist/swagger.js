@@ -1,15 +1,4 @@
 "use strict";
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -26,71 +15,51 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (g && (g = 0, op[0] && (_ = 0)), _) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Swagger = void 0;
-var lodash_1 = __importStar(require("lodash"));
-var path_1 = __importDefault(require("path"));
-var ejs_1 = __importDefault(require("ejs"));
-var fs_1 = __importDefault(require("fs"));
-var fs_2 = require("./fs");
-var prettier_1 = __importDefault(require("prettier"));
+const lodash_1 = __importStar(require("lodash"));
+const path_1 = __importDefault(require("path"));
+const ejs_1 = __importDefault(require("ejs"));
+const fs_1 = __importDefault(require("fs"));
+const fs_2 = require("./fs");
+const prettier_1 = __importDefault(require("prettier"));
 /**
  * swagger 代码生成处理类
  */
-var Swagger = /** @class */ (function () {
-    function Swagger(basePath, apiConfig, swaggerData, prettier) {
+class Swagger {
+    // 接口配置
+    apiConfig;
+    // swagger-json
+    swaggerData;
+    // prettier
+    prettierOptions;
+    constructor(basePath, apiConfig, swaggerData, prettier) {
         this.apiConfig = Object.assign({
             OutPath: path_1.default.join(basePath, 'src/api/' + apiConfig.ApiName),
             TplPath: path_1.default.join(basePath, 'nswag/tpl'),
-            FormatControllerName: this.formatControllerName,
-            FormatMethodName: this.formatMethodName,
-            FormatModelName: this.formatModelName,
+            FormatControllerName: this.formatControllerName, // 格式化模块名称（默认：接口名称+Api）
+            FormatMethodName: this.formatMethodName, // 格式化接口名称（默认：小驼峰命名）
+            FormatModelName: this.formatModelName, // 格式化dto对象、枚举名称（默认：只会去除特殊字符）
             FormatMock: this.formatMock // 格式化模拟数据
         }, apiConfig);
         this.swaggerData = swaggerData;
@@ -100,43 +69,43 @@ var Swagger = /** @class */ (function () {
      * 格式化模块名称（默认：接口名称+Api）
      * @param name 名称
      */
-    Swagger.prototype.formatControllerName = function (name) {
+    formatControllerName(name) {
         return name.indexOf('Api') !== -1 ? name : name + 'Api';
-    };
+    }
     /**
      * 格式化接口名称（默认：小驼峰命名）
      * @param name 名称
      */
-    Swagger.prototype.formatMethodName = function (name) {
+    formatMethodName(name) {
         if (name === '/' || name === '') {
             return '';
         }
-        var fnName = name.substring(name.lastIndexOf('/'));
+        const fnName = name.substring(name.lastIndexOf('/'));
         return lodash_1.default.camelCase(fnName);
-    };
+    }
     /**
      * 格式化dto对象、枚举名称（默认：只会去除特殊字符）
      * @param name 名称
      */
-    Swagger.prototype.formatModelName = function (name) {
+    formatModelName(name) {
         return name.substring(name.lastIndexOf('/') + 1).replace(/[.,\[\]]/g, '_');
-    };
+    }
     /**
      * 去掉换行
      * @param str 字符串
      */
-    Swagger.prototype.removeLineBreak = function (str) {
+    removeLineBreak(str) {
         return str ? str.replace(/[\r\n]/g, '') : '';
-    };
+    }
     /**
      * 处理重名问题
      * @param name 当前名称
      * @param list 列表，对象必须有Name属性才行
      */
-    Swagger.prototype.reName = function (name, list) {
+    reName(name, list) {
         // 方法名称-重名处理
         if (lodash_1.default.findIndex(list, { methodName: name }) !== -1) {
-            var i = 1;
+            let i = 1;
             while (true) {
                 if (lodash_1.default.findIndex(list, { methodName: name + '_' + i }) !== -1) {
                     i++;
@@ -148,31 +117,29 @@ var Swagger = /** @class */ (function () {
             }
         }
         return name;
-    };
+    }
     /**
      * 查找对象节点
      * @param sourceObj 对象
      * @param targObjs 依赖对象
      * @param key 条件字段
      */
-    Swagger.prototype.findObjs = function (sourceObj, targObjs, key) {
-        var _this = this;
+    findObjs(sourceObj, targObjs, key) {
         if ((0, lodash_1.isObjectLike)(sourceObj)) {
-            lodash_1.default.forEach(sourceObj, function (prop, name) {
+            lodash_1.default.forEach(sourceObj, (prop, name) => {
                 if (name == key) {
                     targObjs.push(prop);
                 }
-                _this.findObjs(prop, targObjs, key);
+                this.findObjs(prop, targObjs, key);
             });
         }
         return targObjs;
-    };
+    }
     /**
      * 对schema对象进行类型判断
      * @param obj
      */
-    Swagger.prototype.convertType = function (obj) {
-        var _this = this;
+    convertType(obj) {
         if (!obj) {
             return 'void';
         }
@@ -183,11 +150,11 @@ var Swagger = /** @class */ (function () {
             return this.convertType(obj.oneOf[0]);
         }
         if (obj.hasOwnProperty('allOf')) {
-            var _Types_1 = [];
-            lodash_1.default.forEach(obj.allOf, function (pp, nm) {
-                _Types_1.push(_this.convertType(pp));
+            let _Types = [];
+            lodash_1.default.forEach(obj.allOf, (pp, nm) => {
+                _Types.push(this.convertType(pp));
             });
-            return _Types_1.join(' & ');
+            return _Types.join(' & ');
         }
         if (obj.hasOwnProperty('properties')) {
             return this.convertType(obj.properties);
@@ -196,7 +163,7 @@ var Swagger = /** @class */ (function () {
             return this.formatModelName(obj.$ref);
         }
         if (obj.type === 'array') {
-            var iType = this.convertType(obj.items);
+            const iType = this.convertType(obj.items);
             return 'Array<' + iType + '>';
         }
         else {
@@ -215,39 +182,38 @@ var Swagger = /** @class */ (function () {
                     return 'string | Blob';
                 default:
                     if ((0, lodash_1.isObjectLike)(obj)) {
-                        var objType_1 = {};
-                        lodash_1.default.forEach(obj, function (prop, name) {
-                            objType_1[name] = _this.convertType(prop);
+                        let objType = {};
+                        lodash_1.default.forEach(obj, (prop, name) => {
+                            objType[name] = this.convertType(prop);
                         });
-                        return JSON.stringify(objType_1).replace(/["]/g, '');
+                        return JSON.stringify(objType).replace(/["]/g, '');
                     }
                     else {
                         return 'any';
                     }
             }
         }
-    };
+    }
     /**
      * 获取全部tag
      * @param swaggerData 数据
      */
-    Swagger.prototype.getTags = function () {
-        var _this = this;
-        var tags = {
+    getTags() {
+        let tags = {
         // auth: {
         //   tagName:'',
         //   description: '',
         //   methods: [{methodName:'',url:'',requestName:'',summary:'',parameters:'',responses:''}]
         // }
         };
-        lodash_1.default.forEach(this.swaggerData.paths, function (api, url) {
-            lodash_1.default.forEach(api, function (md, requestName) {
+        lodash_1.default.forEach(this.swaggerData.paths, (api, url) => {
+            lodash_1.default.forEach(api, (md, requestName) => {
                 // 接口Controller
-                var tagName = md.tags[0];
+                let tagName = md.tags[0];
                 if (!tags[tagName]) {
                     tags[tagName] = {
                         tagName: tagName,
-                        description: _this.swaggerData.ControllerDesc ? _this.swaggerData.ControllerDesc[tagName] : '太懒没写注释',
+                        description: this.swaggerData.ControllerDesc ? this.swaggerData.ControllerDesc[tagName] : '太懒没写注释',
                         methods: []
                     };
                 }
@@ -256,20 +222,20 @@ var Swagger = /** @class */ (function () {
                     md.parameters = [];
                 }
                 if (md.requestBody) {
-                    var schema = _this.findObjs(md.requestBody, [], 'schema')[0] || _this.findObjs(md.requestBody, [], 'multipart/form-data')[0].schema;
+                    let schema = this.findObjs(md.requestBody, [], 'schema')[0] || this.findObjs(md.requestBody, [], 'multipart/form-data')[0].schema;
                     if (schema) {
                         md.parameters.push(Object.assign({ name: 'data', in: 'body' }, {
-                            schema: schema,
+                            schema,
                             required: md.requestBody.required
                         }));
                     }
                 }
                 // 方法
-                var method = {
-                    methodName: _this.reName(_this.apiConfig.FormatMethodName(url), tags[tagName].methods),
+                let method = {
+                    methodName: this.reName(this.apiConfig.FormatMethodName(url), tags[tagName].methods),
                     url: url,
                     requestName: requestName,
-                    summary: _this.removeLineBreak(md.summary) || '太懒没写注释',
+                    summary: this.removeLineBreak(md.summary) || '太懒没写注释',
                     parameters: md.parameters,
                     responses: md.responses
                 };
@@ -277,141 +243,138 @@ var Swagger = /** @class */ (function () {
             });
         });
         // 调整方法顺序，因为mock时 有可能匹配错误的mock拦截
-        lodash_1.default.each(tags, function (c) {
+        lodash_1.default.each(tags, (c) => {
             c.methods = lodash_1.default.orderBy(c.methods, ['methodName'], ['desc']);
         });
         // 清理无方法空模块
-        lodash_1.default.remove(tags, function (c) {
+        lodash_1.default.remove(tags, (c) => {
             return c.methods.length <= 0;
         });
         return tags;
-    };
+    }
     /**
      * 获取全部依赖对象
      * @param tag 标签/Controller
      */
-    Swagger.prototype.getTagModels = function (tag) {
-        var _this = this;
-        var models = this.findObjs(tag, [], '$ref');
-        var modelsNames = [];
-        models.forEach(function (item) {
-            var name = _this.apiConfig.FormatModelName(item);
+    getTagModels(tag) {
+        let models = this.findObjs(tag, [], '$ref');
+        let modelsNames = [];
+        models.forEach((item) => {
+            const name = this.apiConfig.FormatModelName(item);
             if (!modelsNames.includes(name))
                 modelsNames.push(name);
         });
         return modelsNames;
-    };
+    }
     // 格式化属性方法
-    Swagger.prototype.fmProperties = function (properties, model, requireds) {
-        var _this = this;
-        lodash_1.default.forEach(properties, function (propertie, name) {
-            var newp = {
+    fmProperties(properties, model, requireds) {
+        lodash_1.default.forEach(properties, (propertie, name) => {
+            const newp = {
                 name: name,
-                description: _this.removeLineBreak(propertie.description),
-                type: _this.convertType(propertie),
+                description: this.removeLineBreak(propertie.description),
+                type: this.convertType(propertie),
                 required: requireds && requireds.length > 0 ? requireds.includes(name) : undefined
             };
             model.properties.push(newp);
         });
-    };
+    }
     // 获取全部请求参数对象
-    Swagger.prototype.getRequestBodys = function () {
-        var _this = this;
-        var requestBodyList = [];
-        lodash_1.default.forEach(this.swaggerData.paths, function (api, url) {
-            lodash_1.default.forEach(api, function (md, requestName) {
+    getRequestBodys() {
+        let requestBodyList = [];
+        lodash_1.default.forEach(this.swaggerData.paths, (api, url) => {
+            lodash_1.default.forEach(api, (md, requestName) => {
                 if (md.requestBody) {
-                    var schema = _this.findObjs(md.requestBody, [], 'schema')[0] || _this.findObjs(md.requestBody, [], 'multipart/form-data')[0].schema;
+                    let schema = this.findObjs(md.requestBody, [], 'schema')[0] || this.findObjs(md.requestBody, [], 'multipart/form-data')[0].schema;
                     if (schema) {
-                        requestBodyList.push(_this.convertType(schema));
+                        requestBodyList.push(this.convertType(schema));
                     }
                 }
             });
         });
         return requestBodyList;
-    };
+    }
     /**
      * 获取全部 Model \ Enum
      * @param node 指定对象节点，可空，如果不传则按默认规则查找
      */
-    Swagger.prototype.getModelsAndEnums = function (node) {
-        var _this = this;
-        var _a, _b, _c;
+    getModelsAndEnums(node) {
         if (!node) {
-            node = ((_b = (_a = this.swaggerData) === null || _a === void 0 ? void 0 : _a.components) === null || _b === void 0 ? void 0 : _b.schemas) || ((_c = this.swaggerData) === null || _c === void 0 ? void 0 : _c.definitions);
+            node = this.swaggerData?.components?.schemas || this.swaggerData?.definitions;
         }
-        var enums = [];
-        var models = [];
-        var requestBodyList = this.getRequestBodys();
-        lodash_1.default.forEach(node, function (definition, name) {
+        let enums = [];
+        let models = [];
+        let requestBodyList = this.getRequestBodys();
+        lodash_1.default.forEach(node, (definition, name) => {
             if (definition.hasOwnProperty('enum')) {
-                var e_1 = {
-                    name: _this.apiConfig.FormatModelName(name),
-                    description: _this.removeLineBreak(definition.description),
+                const e = {
+                    name: this.apiConfig.FormatModelName(name),
+                    description: this.removeLineBreak(definition.description),
                     items: []
                 };
-                var ems = lodash_1.default.zipObject(definition['x-enumNames'], definition.enum);
+                const ems = lodash_1.default.zipObject(definition['x-enumNames'], definition.enum);
                 lodash_1.default.forEach(ems, function (enumValue, enumName) {
-                    var item = {
+                    const item = {
                         name: enumName,
                         value: Number(enumValue)
                     };
-                    e_1.items.push(item);
+                    e.items.push(item);
                 });
-                enums.push(e_1);
+                enums.push(e);
             }
             else {
-                var modelName = _this.apiConfig.FormatModelName(name);
-                var isParameter = requestBodyList.includes(modelName);
-                var m_1 = {
+                const modelName = this.apiConfig.FormatModelName(name);
+                let isParameter = requestBodyList.includes(modelName);
+                const m = {
                     name: modelName,
-                    description: _this.removeLineBreak(definition.description),
+                    description: this.removeLineBreak(definition.description),
                     baseModel: '',
-                    isParameter: isParameter,
+                    isParameter,
                     properties: []
                 };
                 // 格式化属性
                 if (definition.hasOwnProperty('allOf')) {
-                    lodash_1.default.forEach(definition.allOf, function (propertie) {
+                    lodash_1.default.forEach(definition.allOf, (propertie) => {
                         if (propertie.hasOwnProperty('$ref')) {
-                            m_1.baseModel = _this.apiConfig.FormatModelName(propertie.$ref.substring(propertie.$ref.lastIndexOf('/') + 1));
+                            m.baseModel = this.apiConfig.FormatModelName(propertie.$ref.substring(propertie.$ref.lastIndexOf('/') + 1));
                         }
                         else {
                             if (propertie.hasOwnProperty('properties')) {
-                                _this.fmProperties(propertie.properties, m_1, propertie.required || []);
+                                this.fmProperties(propertie.properties, m, propertie.required || []);
                             }
                         }
                     });
                 }
                 else {
-                    _this.fmProperties(definition.properties, m_1, definition.required || []);
+                    this.fmProperties(definition.properties, m, definition.required || []);
                 }
-                models.push(m_1);
+                models.push(m);
             }
         });
-        return { models: models, enums: enums };
-    };
+        return { models, enums };
+    }
     /**
      * 获取请求参数
      * @param parameters 参数数组，不同版本swagger有差异
      * @param inTypes 参数类型数组，可同时查多种类型 query、path、body、header
      * @param format 格式化数据
      */
-    Swagger.prototype.getParameter = function (parameters, inTypes, format) {
-        var _this = this;
-        var pas = lodash_1.default.filter(parameters, function (item) {
+    getParameter(parameters, inTypes, format) {
+        let pas = lodash_1.default.filter(parameters, (item) => {
             return inTypes.includes(item.in);
-        }).map(function (item) {
-            return __assign(__assign({}, item), { type: _this.convertType(item) });
+        }).map((item) => {
+            return {
+                ...item,
+                type: this.convertType(item)
+            };
         });
         // 格式化
         if (format) {
-            return pas.map(function (item) {
+            return pas.map((item) => {
                 return format(item);
             });
         }
         // 排序一下参数，把非必填参数排后面
-        return pas.sort(function (a, b) {
+        return pas.sort((a, b) => {
             if (a.required && !b.required) {
                 return -1; // a在b之前
             }
@@ -420,22 +383,22 @@ var Swagger = /** @class */ (function () {
             }
             return 0; // 顺序不变
         });
-    };
+    }
     /**
      * 获取请求参数
      * @param responses 返回对象
      */
-    Swagger.prototype.getResponses = function (responses) {
-        var schema = this.findObjs(responses, [], 'schema')[0];
+    getResponses(responses) {
+        let schema = this.findObjs(responses, [], 'schema')[0];
         return this.convertType(schema);
-    };
+    }
     /**
      * 格式化模拟值
      * @param val 默认格式化后的值
      * @param p 对应的属性
      * @param mock 最终模拟数据
      */
-    Swagger.prototype.formatMock = function (val, p, mock) {
+    formatMock(val, p, mock) {
         switch (p.type) {
             case 'string':
                 switch (p.name) {
@@ -494,7 +457,7 @@ var Swagger = /** @class */ (function () {
                 break;
         }
         return mock;
-    };
+    }
     /**
      * 格式化模拟数据
      * @param responses 当前需要模拟的对象
@@ -502,24 +465,22 @@ var Swagger = /** @class */ (function () {
      * @param fm 格式化模拟数据函数
      * @param deep 递归层级，防止对象父子嵌套导致死循环 默认递归5级
      */
-    Swagger.prototype.mock = function (responses, models, deep) {
-        var _this = this;
-        if (deep === void 0) { deep = 1; }
-        var responsesList;
+    mock(responses, models, deep = 1) {
+        let responsesList;
         if (responses.indexOf('&') > 0) {
             responsesList = responses.split('&');
         }
         else {
             responsesList = [responses];
         }
-        var mock = {};
-        responsesList.forEach(function (item) {
-            var _name = item.trim().replace('{data:', '').replace('}', '');
-            var model = lodash_1.default.find(models, { name: _name });
+        let mock = {};
+        responsesList.forEach((item) => {
+            let _name = item.trim().replace('{data:', '').replace('}', '');
+            let model = lodash_1.default.find(models, { name: _name });
             if (model) {
-                model.properties.forEach(function (p) {
+                model.properties.forEach((p) => {
                     // 'string' | 'number' | 'boolean' | 'file' | 'array' | 'enum' | 'schema'
-                    var v = '';
+                    let v = '';
                     switch (p.type) {
                         case 'string':
                             v = '@ctitle(10, 20)';
@@ -534,16 +495,16 @@ var Swagger = /** @class */ (function () {
                             v = '';
                             break;
                         case 'array':
-                            v = deep > 5 ? [] : [_this.mock(p.type, models, deep + 1)];
+                            v = deep > 5 ? [] : [this.mock(p.type, models, deep + 1)];
                             break;
                         case 'enum':
                             v = p.type;
                             break;
                         case 'schema':
-                            v = deep > 5 ? null : _this.mock(p.type, models, deep + 1);
+                            v = deep > 5 ? null : this.mock(p.type, models, deep + 1);
                             break;
                     }
-                    mock = _this.apiConfig.FormatMock(v, p, mock);
+                    mock = this.apiConfig.FormatMock(v, p, mock);
                 });
                 return mock;
             }
@@ -562,7 +523,7 @@ var Swagger = /** @class */ (function () {
             }
         });
         return mock;
-    };
+    }
     /**
      * 生成代码
      * @param TplPath 模板绝对地址
@@ -572,47 +533,28 @@ var Swagger = /** @class */ (function () {
      * @param data.swaggerData 接口数据
      * @param data.apiConfig 接口配置
      */
-    Swagger.prototype.codeRender = function (TplPath, OutPath, fileName, data) {
-        return __awaiter(this, void 0, void 0, function () {
-            var fileText, savePath, content, _a;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        if (!(0, fs_2.markDirsSync)(OutPath)) return [3 /*break*/, 4];
-                        fileText = ejs_1.default.render(fs_1.default.readFileSync(TplPath, 'utf-8'), data, {
-                            context: this
-                        });
-                        savePath = path_1.default.join(OutPath, fileName);
-                        if (!this.prettierOptions) return [3 /*break*/, 2];
-                        return [4 /*yield*/, prettier_1.default.format(fileText, { parser: 'babel-ts', singleQuote: true, printWidth: 180, tabWidth: 2, semi: false, trailingComma: 'none' })];
-                    case 1:
-                        _a = _b.sent();
-                        return [3 /*break*/, 3];
-                    case 2:
-                        _a = fileText;
-                        _b.label = 3;
-                    case 3:
-                        content = _a;
-                        fs_1.default.writeFileSync(savePath, content);
-                        _b.label = 4;
-                    case 4: return [2 /*return*/];
-                }
+    async codeRender(TplPath, OutPath, fileName, data) {
+        if ((0, fs_2.markDirsSync)(OutPath)) {
+            const fileText = ejs_1.default.render(fs_1.default.readFileSync(TplPath, 'utf-8'), data, {
+                context: this
             });
-        });
-    };
+            const savePath = path_1.default.join(OutPath, fileName);
+            const content = this.prettierOptions ? await prettier_1.default.format(fileText, { parser: 'babel-ts', singleQuote: true, printWidth: 180, tabWidth: 2, semi: false, trailingComma: 'none' }) : fileText;
+            fs_1.default.writeFileSync(savePath, content);
+        }
+    }
     /**
      * 生成代码
      */
-    Swagger.prototype.generate = function () {
-        var _this = this;
-        var saveBaseDir = path_1.default.join(this.apiConfig.OutPath, 'base');
-        var saveModelsDir = path_1.default.join(this.apiConfig.OutPath, 'model');
-        var saveMockDir = path_1.default.join(this.apiConfig.OutPath, 'mock');
-        var tplBasePath = path_1.default.join(this.apiConfig.TplPath, 'base.ejs');
-        var tplMethodPath = path_1.default.join(this.apiConfig.TplPath, 'method.ejs');
-        var tplModelsPath = path_1.default.join(this.apiConfig.TplPath, 'model.ejs');
-        var tplMockPath = path_1.default.join(this.apiConfig.TplPath, 'mock.ejs');
-        var tplMockMethodPath = path_1.default.join(this.apiConfig.TplPath, 'mock-method.ejs');
+    generate() {
+        const saveBaseDir = path_1.default.join(this.apiConfig.OutPath, 'base');
+        const saveModelsDir = path_1.default.join(this.apiConfig.OutPath, 'model');
+        const saveMockDir = path_1.default.join(this.apiConfig.OutPath, 'mock');
+        const tplBasePath = path_1.default.join(this.apiConfig.TplPath, 'base.ejs');
+        const tplMethodPath = path_1.default.join(this.apiConfig.TplPath, 'method.ejs');
+        const tplModelsPath = path_1.default.join(this.apiConfig.TplPath, 'model.ejs');
+        const tplMockPath = path_1.default.join(this.apiConfig.TplPath, 'mock.ejs');
+        const tplMockMethodPath = path_1.default.join(this.apiConfig.TplPath, 'mock-method.ejs');
         // 清理旧代码
         (0, fs_2.removeDirSync)(this.apiConfig.OutPath);
         // 生成-基类
@@ -626,12 +568,12 @@ var Swagger = /** @class */ (function () {
             apiConfig: this.apiConfig
         });
         // 生成-接口
-        var tags = this.getTags();
-        lodash_1.default.forEach(tags, function (tag, tagName) {
-            _this.codeRender(tplMethodPath, _this.apiConfig.OutPath, _this.apiConfig.FormatControllerName(tagName) + '.ts', { tag: tag, swaggerData: _this.swaggerData, apiConfig: _this.apiConfig });
+        const tags = this.getTags();
+        lodash_1.default.forEach(tags, (tag, tagName) => {
+            this.codeRender(tplMethodPath, this.apiConfig.OutPath, this.apiConfig.FormatControllerName(tagName) + '.ts', { tag, swaggerData: this.swaggerData, apiConfig: this.apiConfig });
             // 生成-Mock-接口
-            if (_this.apiConfig.Mock) {
-                _this.codeRender(tplMockMethodPath, saveMockDir, _this.apiConfig.FormatControllerName(tagName) + '.ts', { tag: tag, swaggerData: _this.swaggerData, apiConfig: _this.apiConfig });
+            if (this.apiConfig.Mock) {
+                this.codeRender(tplMockMethodPath, saveMockDir, this.apiConfig.FormatControllerName(tagName) + '.ts', { tag, swaggerData: this.swaggerData, apiConfig: this.apiConfig });
             }
         });
         // 生成-Mock
@@ -641,8 +583,6 @@ var Swagger = /** @class */ (function () {
                 apiConfig: this.apiConfig
             });
         }
-    };
-    return Swagger;
-}());
+    }
+}
 exports.Swagger = Swagger;
-//# sourceMappingURL=swagger.js.map

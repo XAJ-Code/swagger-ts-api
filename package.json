@@ -1,6 +1,6 @@
 {
-  "name": "nswag-ts",
-  "version": "1.4.6",
+  "name": "swagger-ts-api",
+  "version": "1.0.0",
   "description": "根据swagger文档生成typescript客户端调用代码",
   "bin": {
     "nswag": "./bin/nswag.js"
@@ -8,6 +8,7 @@
   "scripts": {
     "build": "tsc",
     "build:dev": "tsc -w",
+    "build:tsdown": "tsdown",
     "release": "tsc && npm publish --registry https://registry.npmjs.org",
     "init": "node bin/nswag.js init dev",
     "run": "node bin/nswag.js run dev",
@@ -21,26 +22,27 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://gitee.com/money-code/nswag-ts.git"
+    "url": "https://github.com/XAJ-Code/swagger-ts-api"
   },
   "keywords": [
-    "nswag",
-    "nswag-ts",
+    "swagger-ts-api",
+    "swagger-ts",
     "swagger",
     "typescript"
   ],
-  "author": "hezechang",
+  "author": "zwj",
   "license": "MIT",
   "devDependencies": {
     "@types/lodash": "^4.14.161",
-    "@types/node": "^14.10.2",
+    "@types/node": "^22.15.26",
     "ts-node": "^9.0.0",
-    "typescript": "^4.0.2"
+    "tsdown": "^0.12.4",
+    "typescript": "^5.8.3"
   },
   "dependencies": {
-    "@types/ejs": "^3.0.4",
+    "@types/ejs": "^3.1.5",
     "axios": "^0.20.0",
-    "ejs": "^3.1.5",
+    "ejs": "^3.1.10",
     "lodash": "^4.17.20",
     "prettier": "^3.3.3"
   }

@@ -207,5 +207,5 @@ this.getTags()
 
 #### 代码仓库
 
-1. https://gitee.com/money-code/nswag-ts
+1. https://github.com/XAJ-Code/swagger-ts-api
 2. https://www.npmjs.com/package/nswag-ts

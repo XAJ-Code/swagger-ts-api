@@ -15,20 +15,32 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.removeDirSync = exports.markDirsSync = exports.copy = void 0;
-var fs_1 = __importStar(require("fs"));
-var path_1 = __importDefault(require("path"));
+exports.copy = copy;
+exports.markDirsSync = markDirsSync;
+exports.removeDirSync = removeDirSync;
+const fs_1 = __importStar(require("fs"));
+const path_1 = __importDefault(require("path"));
 /**
  * 复制
  * @param src 源地址
@@ -80,7 +92,6 @@ function copy(src, dst) {
         });
     });
 }
-exports.copy = copy;
 /**
  * 创建目录
  * @param path 目录
@@ -88,17 +99,17 @@ exports.copy = copy;
 function markDirsSync(path) {
     try {
         if (!fs_1.default.existsSync(path)) {
-            var pathtmp_1 = '';
-            path.split(/[/\\]/).forEach(function (dirname) {
+            let pathtmp = '';
+            path.split(/[/\\]/).forEach(dirname => {
                 // 这里指用/ 或\ 都可以分隔目录  如  linux的/usr/local/services   和windows的 d:\temp\aaaa
-                if (pathtmp_1) {
-                    pathtmp_1 = path_1.default.join(pathtmp_1, dirname);
+                if (pathtmp) {
+                    pathtmp = path_1.default.join(pathtmp, dirname);
                 }
                 else {
-                    pathtmp_1 = dirname || '/';
+                    pathtmp = dirname || '/';
                 }
-                if (!fs_1.default.existsSync(pathtmp_1)) {
-                    fs_1.default.mkdirSync(pathtmp_1);
+                if (!fs_1.default.existsSync(pathtmp)) {
+                    fs_1.default.mkdirSync(pathtmp);
                 }
             });
         }
@@ -109,13 +120,12 @@ function markDirsSync(path) {
         return false;
     }
 }
-exports.markDirsSync = markDirsSync;
 /**
  * 删除文件夹
  * @param path 地址
  */
 function removeDirSync(path) {
-    var files = [];
+    let files = [];
     /**
      * 判断给定的路径是否存在
      */
@@ -125,7 +135,7 @@ function removeDirSync(path) {
          */
         files = fs_1.default.readdirSync(path);
         files.forEach(function (file) {
-            var curPath = path_1.default.join(path, file);
+            const curPath = path_1.default.join(path, file);
             /**
              * fs.statSync同步读取文件夹文件，如果是文件夹，在重复触发函数
              */
@@ -146,5 +156,3 @@ function removeDirSync(path) {
         console.log('给定的路径不存在，请给出正确的路径');
     }
 }
-exports.removeDirSync = removeDirSync;
-//# sourceMappingURL=fs.js.map

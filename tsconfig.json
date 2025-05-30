@@ -1,14 +1,14 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "ESNext",
     "module": "commonjs",
     "lib": ["es2017", "es7", "es6", "dom"],
     "declaration": true,
     "outDir": "dist",
     "strict": true,
     "esModuleInterop": true,
-    "sourceMap": true,
-    "noImplicitAny": true
+    "sourceMap": false,
+    "noImplicitAny": true,
   },
   "include": ["src"]
 }
