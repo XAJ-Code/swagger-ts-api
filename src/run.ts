@@ -1,5 +1,6 @@
 import _path from 'path'
 // import fs from 'fs'
+import ora from 'ora'
 import { NswagOptions } from './type'
 import readline from 'readline'
 import { Swagger } from './swagger'
@@ -13,9 +14,11 @@ export default async (basePath: string) => {
   // 根据配置文件路径获取配置对象
   const configPath = _path.join(basePath, 'nswag/config.js')
   const nswagOptions = require(configPath) as NswagOptions
-  renderProgress(`你的配置文件路径为: ${configPath}`)
+  const spinner = ora(`你配置文件的路径:${configPath}`).start();
+  spinner.color = 'yellow';
   nswagOptions.Apis.forEach((apiConfig) => {
-    renderProgress(`正在生成 ${apiConfig.ApiName}`)
+    // renderProgress(`正在生成 ${apiConfig.ApiName}`)
+    spinner.text = `正在生成 ${apiConfig.ApiName}`
     getSwaggerData(apiConfig.SwaggerUrl).then((r) => {
       // console.log('r: ', r);
       //将r 写入文件中
@@ -23,7 +26,11 @@ export default async (basePath: string) => {
       const swagger = new Swagger(basePath, apiConfig, r, nswagOptions.prettier)
       swagger.generate()
     })
-    renderProgress(`${apiConfig.ApiName} 生成成功`)
+    // renderProgress(`${apiConfig.ApiName} 生成成功`)
+    setTimeout(() => {
+      spinner.succeed(`${apiConfig.ApiName} 生成成功`)
+      spinner.stop();
+    }, 3000)
   })
 }
 

@@ -1,6 +1,6 @@
 {
   "name": "swagger-ts-api_zwj",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "根据swagger文档生成typescript客户端调用代码",
   "bin": {
     "nswag": "./bin/nswag.js"
@@ -42,6 +42,7 @@
     "axios": "^0.20.0",
     "ejs": "^3.1.10",
     "lodash": "^4.17.20",
+    "ora": "^8.2.0",
     "prettier": "^3.3.3"
   }
 }
