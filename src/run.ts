@@ -1,5 +1,5 @@
 import _path from 'path'
-import fs from 'fs'
+// import fs from 'fs'
 import { NswagOptions } from './type'
 import readline from 'readline'
 import { Swagger } from './swagger'
@@ -14,17 +14,17 @@ export default async (basePath: string) => {
   const configPath = _path.join(basePath, 'nswag/config.js')
   const nswagOptions = require(configPath) as NswagOptions
   renderProgress(`你的配置文件路径为: ${configPath}`)
-  // nswagOptions.Apis.forEach((apiConfig) => {
-  //   renderProgress(`正在生成 ${apiConfig.ApiName}`)
-  //   getSwaggerData(apiConfig.SwaggerUrl).then((r) => {
-  //     // console.log('r: ', r);
-  //     //将r 写入文件中
-  //     // fs.writeFileSync(_path.join(basePath, 'swagger.json'), JSON.stringify(r, null, 2))
-  //     const swagger = new Swagger(basePath, apiConfig, r, nswagOptions.prettier)
-  //     swagger.generate()
-  //   })
-  //   renderProgress(`${apiConfig.ApiName} 生成成功`)
-  // })
+  nswagOptions.Apis.forEach((apiConfig) => {
+    renderProgress(`正在生成 ${apiConfig.ApiName}`)
+    getSwaggerData(apiConfig.SwaggerUrl).then((r) => {
+      // console.log('r: ', r);
+      //将r 写入文件中
+      // fs.writeFileSync(_path.join(basePath, 'swagger.json'), JSON.stringify(r, null, 2))
+      const swagger = new Swagger(basePath, apiConfig, r, nswagOptions.prettier)
+      swagger.generate()
+    })
+    renderProgress(`${apiConfig.ApiName} 生成成功`)
+  })
 }
 
 /**

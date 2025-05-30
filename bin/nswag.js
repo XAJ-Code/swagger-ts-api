@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 const packageInfo = require('../package.json')
-const init = require('../dist/init').default
-const run = require('../dist/run').default
+// const init = require('../dist/init').default
+// const run = require('../dist/run').default
+const init = require('../tsdown-dist/init.mjs').default
+const run = require('../tsdown-dist/run.mjs').default
 const _path = require('path')
 
 const argv = process.argv.slice(2)

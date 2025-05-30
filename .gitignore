@@ -17,6 +17,7 @@ nswag
 api
 lib
 test
+/tsdown-dist
 # Coverage directory used by tools like istanbul
 coverage
 
