@@ -1,6 +1,6 @@
 {
-  "name": "swagger-ts-api",
-  "version": "1.0.0",
+  "name": "swagger-ts-api_zwj",
+  "version": "1.0.1",
   "description": "根据swagger文档生成typescript客户端调用代码",
   "bin": {
     "nswag": "./bin/nswag.js"
@@ -8,7 +8,6 @@
   "scripts": {
     "build": "tsc",
     "build:dev": "tsc -w",
-    "build:tsdown": "tsdown",
     "release": "tsc && npm publish --registry https://registry.npmjs.org",
     "init": "node bin/nswag.js init dev",
     "run": "node bin/nswag.js run dev",
@@ -36,7 +35,6 @@
     "@types/lodash": "^4.14.161",
     "@types/node": "^22.15.26",
     "ts-node": "^9.0.0",
-    "tsdown": "^0.12.4",
     "typescript": "^5.8.3"
   },
   "dependencies": {

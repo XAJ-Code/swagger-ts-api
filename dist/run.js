@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const path_1 = __importDefault(require("path"));
 const readline_1 = __importDefault(require("readline"));
+const swagger_1 = require("./swagger");
 const https_1 = __importDefault(require("https"));
 const axios_1 = __importDefault(require("axios"));
 /**
@@ -16,17 +17,17 @@ exports.default = async (basePath) => {
     const configPath = path_1.default.join(basePath, 'nswag/config.js');
     const nswagOptions = require(configPath);
     renderProgress(`你的配置文件路径为: ${configPath}`);
-    // nswagOptions.Apis.forEach((apiConfig) => {
-    //   renderProgress(`正在生成 ${apiConfig.ApiName}`)
-    //   getSwaggerData(apiConfig.SwaggerUrl).then((r) => {
-    //     // console.log('r: ', r);
-    //     //将r 写入文件中
-    //     // fs.writeFileSync(_path.join(basePath, 'swagger.json'), JSON.stringify(r, null, 2))
-    //     const swagger = new Swagger(basePath, apiConfig, r, nswagOptions.prettier)
-    //     swagger.generate()
-    //   })
-    //   renderProgress(`${apiConfig.ApiName} 生成成功`)
-    // })
+    nswagOptions.Apis.forEach((apiConfig) => {
+        renderProgress(`正在生成 ${apiConfig.ApiName}`);
+        getSwaggerData(apiConfig.SwaggerUrl).then((r) => {
+            // console.log('r: ', r);
+            //将r 写入文件中
+            // fs.writeFileSync(_path.join(basePath, 'swagger.json'), JSON.stringify(r, null, 2))
+            const swagger = new swagger_1.Swagger(basePath, apiConfig, r, nswagOptions.prettier);
+            swagger.generate();
+        });
+        renderProgress(`${apiConfig.ApiName} 生成成功`);
+    });
 };
 /**
  * 生成进度
