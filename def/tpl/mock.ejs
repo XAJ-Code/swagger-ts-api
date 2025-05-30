@@ -1,0 +1,10 @@
+import Mock from 'mockjs'
+<% let tags = this.getTags();for(key in tags){let tag=tags[key]%>
+<%- ('import '+ tag.tagName + ' from "./'+ tag.tagName)+'"' %><%}%>
+
+Mock.setup({
+  timeout: '350-1000'
+})
+<% for(key in tags){let tag=tags[key];tag.methods.forEach(m=> {%>
+Mock.mock(<%-'/' + m.url.replace(/\//g, '\\/') + '/'%>, '<%=m.requestName%>', <%=tag.tagName%>.<%=m.methodName%>)
+<%})}%>

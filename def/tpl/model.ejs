@@ -1,0 +1,16 @@
+<% let data=this.getModelsAndEnums() %>
+<% data.models.forEach( m => { %>// <%= m.description || '无' %>
+export interface <%= m.name + (m.baseModel?' extends '+m.baseModel:'') %> {<% m.properties.forEach( p => { %>
+  // <%= p.description || '无' %>
+  <%= p.name+(p.required!==undefined && !p.required?'?':'') %>: <%- p.type %>
+<% }) %>}
+<% }) %>
+<% data.enums.forEach( m => { %>// <%= m.description || '无' %><%
+  let items = m.items.map(p=>{
+    return '  '+p.name +' = '+ p.value
+  }).join(',\n');
+%>
+export enum <%= m.name %> { 
+<%= items %> 
+}
+<% }) %>

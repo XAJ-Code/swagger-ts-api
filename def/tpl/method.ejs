@@ -1,0 +1,32 @@
+import { httpRequest, httpDownload } from './base'
+import type { <%=this.getTagModels(tag).map(item=>item.replace(/«|»/g,'')).join(', ')%> } from './model'
+/**
+ * <%=tag.description%>
+ */
+export default {
+  <%tag.methods.forEach(m=>{ 
+    let querybodyParameters = this.getParameter(m.parameters,['query','body','path'])
+    let querys = this.getParameter(m.parameters,['query'],(item)=>{return item.name})
+    let bodys = this.getParameter(m.parameters,['body'],(item)=>{return item.name})
+    let paths = this.getParameter(m.parameters,['path'],(item)=>{return item.name})
+
+    let data = bodys.length>0?('data: '+bodys[0]):''
+    let params =querys.length>0?('params: { '+querys.join(' , ')+' } '):''
+  
+    let responses = this.getResponses(m.responses)
+
+    // 判断是否为导出函数
+    let isDownload=responses=='string | Blob' || responses=='File'
+  %>
+  /*
+   * <%=m.summary || '无'%>
+   <%-querybodyParameters.map(p=>'* @param '+ p.name + ' - ' + p.type  + ' - ' +  p.in + ' - ' + (p.description || '无') + ' - '+ (p.required?'必填':'可空')).join('\r\n   ')%>
+   */
+  <%-m.methodName %>(<%-querybodyParameters.map(p=>p.name+(p.required?'':'?')+':'+p.type).join(',')%>): Promise<<%-responses.replace(/«|»/g,'')%>> {
+    return <%=isDownload?'httpDownload':'httpRequest'%>({
+      url:<%-paths.length>0?"`"+m.url.replace(/{/g,"${")+"`":"'"+m.url+"'"%>,
+      method: '<%=m.requestName%>'<%-querys.length>0?',\n      ':''%><%-params%><%-data.length>0?',\n      ':''%><%-data%>
+    })
+  },
+  <%})%>
+}

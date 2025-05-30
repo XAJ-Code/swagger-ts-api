@@ -1,0 +1,42 @@
+import axios, { type AxiosRequestConfig } from 'axios'
+
+// 创建请求实例
+const instance = axios.create()
+// 添加请求拦截器
+instance.interceptors.request.use(
+  (config) => {
+    // 接口基地址
+    config.baseURL = '<%- apiConfig.ApiBase %>'
+    return config
+  },
+  (error) => {
+    Promise.reject(error)
+  }
+)
+// 添加响应拦截器
+instance.interceptors.response.use(
+  (response) => {
+    return response
+  },
+  (error) => {
+    if (error.statusCode == 403) {
+      error.message = '登录超时'
+    } else {
+      error.message = error.message === 'Network Error' ? '网络异常，请稍后再试' : '接口请求出错'
+    }
+    return Promise.reject(error.message)
+  }
+)
+
+// 发起请求
+export async function httpRequest(config: AxiosRequestConfig) {
+  const r = await instance(config)
+  return r.data
+}
+
+// 下载请求
+export async function httpDownload(config: AxiosRequestConfig) {
+  const r = await instance(config)
+  // TODO 这里处理您的下载逻辑
+  return r.data
+}

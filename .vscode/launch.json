@@ -1,0 +1,40 @@
+{
+  // 使用 IntelliSense 了解相关属性。
+  // 悬停以查看现有属性的描述。
+  // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "调试-init",
+      "type": "node",
+      "request": "launch",
+      "args": [
+        "${workspaceRoot}/bin/nswag.js", // 入口文件
+        "init", // init 或者 run
+        "dev"
+      ],
+      "runtimeArgs": ["--nolazy", "-r", "ts-node/register"],
+      "sourceMaps": true,
+      "cwd": "${workspaceRoot}",
+      "protocol": "inspector",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "name": "调试-run",
+      "type": "node",
+      "request": "launch",
+      "args": [
+        "${workspaceRoot}/bin/nswag.js", // 入口文件
+        "run", // init 或者 run
+        "dev"
+      ],
+      "runtimeArgs": ["--nolazy", "-r", "ts-node/register"],
+      "sourceMaps": true,
+      "cwd": "${workspaceRoot}",
+      "protocol": "inspector",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    }
+  ]
+}

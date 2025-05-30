@@ -1,0 +1,18 @@
+/* eslint-disable */
+import Mock from 'mockjs'
+
+/**
+ * <%=tag.description%>
+ */
+class <%=tag.tagName%> {<% tag.methods.forEach( m => {%>
+<%
+  let data = this.getModelsAndEnums()
+  let responses = this.getResponses(m.responses)
+  let mockdata = this.mock(responses, data.models)
+%>
+  public <%=m.methodName %>(): Mock.MockjsMock {
+    return Mock.mock(<%- JSON.stringify(mockdata) %>)
+  }<% }) %>
+}
+
+export default new <%=tag.tagName%>()
