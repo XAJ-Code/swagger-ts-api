@@ -208,4 +208,4 @@ this.getTags()
 #### 代码仓库
 
 1. https://github.com/XAJ-Code/swagger-ts-api
-2. https://www.npmjs.com/package/nswag-ts
+2. https://www.npmjs.com/package/swagger-ts-api_zwj
