@@ -13,7 +13,10 @@ import axios from 'axios'
 export default async (basePath: string) => {
   // 根据配置文件路径获取配置对象
   const configPath = _path.join(basePath, 'nswag/config.js')
-  const nswagOptions = require(configPath) as NswagOptions
+  // const nswagOptions = require(configPath) as NswagOptions
+  //兼容esm和cjs配置文件
+  let res = await import(configPath) as { default: NswagOptions }
+  const nswagOptions = res.default || (res as any)
   const spinner = ora(`你配置文件的路径:${configPath}`).start();
   spinner.color = 'yellow';
   nswagOptions.Apis.forEach((apiConfig) => {
