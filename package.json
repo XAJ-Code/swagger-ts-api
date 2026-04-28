@@ -3,7 +3,7 @@
   "version": "1.2.0",
   "description": "根据swagger文档生成typescript客户端调用代码",
   "bin": {
-    "nswag": "./bin/nswag.js"
+    "nswag": "bin/nswag.js"
   },
   "scripts": {
     "build": "tsc",
@@ -21,7 +21,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/XAJ-Code/swagger-ts-api"
+    "url": "git+https://github.com/XAJ-Code/swagger-ts-api.git"
   },
   "keywords": [
     "swagger-ts-api",
