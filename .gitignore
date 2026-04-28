@@ -18,6 +18,7 @@ api
 lib
 # test
 /tsdown-dist
+/.claude
 # Coverage directory used by tools like istanbul
 coverage
 

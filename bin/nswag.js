@@ -16,7 +16,7 @@ if (arg0 === '-v' || arg0 === '--version') {
   console.log('[查看版本]  nswag -v\n')
 } else {
   const isDev = argv[1]
-  const basePath = _path.join(__dirname, isDev ? '../test' : '../../../')
+  const basePath = isDev ? _path.join(__dirname, '../test') : process.cwd()
   switch (arg0) {
     // 初始化配置
     case 'init':

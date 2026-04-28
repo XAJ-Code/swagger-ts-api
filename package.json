@@ -1,6 +1,6 @@
 {
   "name": "swagger-ts-api_zwj",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "根据swagger文档生成typescript客户端调用代码",
   "bin": {
     "nswag": "./bin/nswag.js"
