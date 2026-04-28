@@ -4,7 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const path_1 = __importDefault(require("path"));
-// import fs from 'fs'
+const url_1 = require("url");
+const fs_1 = __importDefault(require("fs"));
 const ora_1 = __importDefault(require("ora"));
 const readline_1 = __importDefault(require("readline"));
 const swagger_1 = require("./swagger");
@@ -16,8 +17,24 @@ const axios_1 = __importDefault(require("axios"));
  */
 exports.default = async (basePath) => {
     // 根据配置文件路径获取配置对象
-    const configPath = path_1.default.join(basePath, 'nswag/config.js');
-    const nswagOptions = require(configPath);
+    // 自动检测 config.js / config.cjs / config.mjs
+    const configDir = path_1.default.join(basePath, 'nswag');
+    const extensions = ['.js', '.cjs', '.mjs'];
+    let configPath = '';
+    for (const ext of extensions) {
+        const p = path_1.default.join(configDir, `config${ext}`);
+        if (fs_1.default.existsSync(p)) {
+            configPath = p;
+            break;
+        }
+    }
+    if (!configPath) {
+        throw new Error(`找不到配置文件，请在 nswag/ 目录下创建 config.js / config.cjs / config.mjs`);
+    }
+    //兼容esm和cjs配置文件（eval防止TS编译为require，pathToFileURL解决Windows路径问题）
+    const configUrl = (0, url_1.pathToFileURL)(configPath).href;
+    let res = await eval('import(configUrl)');
+    const nswagOptions = res.default || res;
     const spinner = (0, ora_1.default)(`你配置文件的路径:${configPath}`).start();
     spinner.color = 'yellow';
     nswagOptions.Apis.forEach((apiConfig) => {

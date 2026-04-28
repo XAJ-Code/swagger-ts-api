@@ -1,5 +1,6 @@
 import _path from 'path'
-// import fs from 'fs'
+import { pathToFileURL } from 'url'
+import fs from 'fs'
 import ora from 'ora'
 import { NswagOptions } from './type'
 import readline from 'readline'
@@ -12,10 +13,23 @@ import axios from 'axios'
  */
 export default async (basePath: string) => {
   // 根据配置文件路径获取配置对象
-  const configPath = _path.join(basePath, 'nswag/config.js')
-  // const nswagOptions = require(configPath) as NswagOptions
-  //兼容esm和cjs配置文件
-  let res = await import(configPath) as { default: NswagOptions }
+  // 自动检测 config.js / config.cjs / config.mjs
+  const configDir = _path.join(basePath, 'nswag')
+  const extensions = ['.js', '.cjs', '.mjs']
+  let configPath = ''
+  for (const ext of extensions) {
+    const p = _path.join(configDir, `config${ext}`)
+    if (fs.existsSync(p)) {
+      configPath = p
+      break
+    }
+  }
+  if (!configPath) {
+    throw new Error(`找不到配置文件，请在 nswag/ 目录下创建 config.js / config.cjs / config.mjs`)
+  }
+  //兼容esm和cjs配置文件（eval防止TS编译为require，pathToFileURL解决Windows路径问题）
+  const configUrl = pathToFileURL(configPath).href
+  let res = await (eval('import(configUrl)') as Promise<{ default: NswagOptions }>)
   const nswagOptions = res.default || (res as any)
   const spinner = ora(`你配置文件的路径:${configPath}`).start();
   spinner.color = 'yellow';
